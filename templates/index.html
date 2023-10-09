@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MQTT Data Display</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"
+      integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      // var socket = io.connect('http://' + document.domain + ':' + location.port + '/mqtt');
+      var socket = io();
+      socket.on("mqtt_data_update", function (data) {
+        console.log(data);
+        document.getElementById("temperature").textContent = data[0];
+        document.getElementById("humidity").textContent = data[1];
+        document.getElementById("rainfall").textContent = data[2];
+        document.getElementById("prediction").textContent = data[3];
+        var predElement = document.getElementById("prediction");
+        var imageElement = document.getElementById("imageElement");
+        if(predElement.textContent == "You're in Danger"){
+          predElement.classList.remove("green-text");
+          predElement.classList.add("red-text");
+          imageElement.src = "../static/assets/fire.png";
+        }
+        else{
+          predElement.classList.remove("red-text");
+          predElement.classList.add("green-text");
+          imageElement.src = "../static/assets/safe.png";
+        }
+      });
+    </script>
+    <script>
+        function updateDateTime() {
+            $.get('/current_datetime', function(data) {
+                var date = data.current_datetime.split(" ")[0];
+                var time = data.current_datetime.split(" ")[1] + " " 
+                + data.current_datetime.split(" ")[2];
+                document.getElementById("date").textContent = date;
+                document.getElementById("time").textContent = time;
+                console.log(data.current_datetime);
+            });
+        }
+
+        setInterval(updateDateTime, 60000);
+        updateDateTime();
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <p id="date" class="header-date"></p>
+        <h1 class="title-text">Forest Fire Prediction</h1>
+        <p id="time" class="header-time"></p>
+      </div>
+    </header>
+    <div class="content">
+      <p class="content-description">
+        Welcome to the Forest Fire Prediction page. Here, you can find
+        information and predictions related to forest fires. Our goal is to
+        provide accurate and timely data to help prevent and manage forest fires
+        effectively.
+      </p>
+      <div class="weather-container">
+        <h1 class="weather-container-title">Weather Info</h1>
+        <div class="weather-card">
+          <div class="parameter-label">Temperature</div>
+          <div class="parameter-value">
+            <span id="temperature">-</span> &deg;C
+          </div>
+        </div>
+        <div class="weather-card">
+          <div class="parameter-label">Humidity</div>
+          <div class="parameter-value"><span id="humidity">-</span> %</div>
+        </div>
+        <div class="weather-card">
+          <div class="parameter-label">Rainfall</div>
+          <div class="parameter-value"><span id="rainfall">-</span> mm</div>
+        </div>
+      </div>
+      <div class="pred-container">
+        <h1 class="pred-container-title">Prediction</h1>
+        <div class="pred-card">
+          <div class="pred-label">
+            <img
+              src="../static/assets/fire.png"
+              alt="Safe Icon"
+              class="label-img"
+              id="imageElement"
+            />
+          </div>
+          <div class="pred-text">
+            <span id="prediction">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div>
+        <p class="footer-text">Copyright &#169; 2023. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>

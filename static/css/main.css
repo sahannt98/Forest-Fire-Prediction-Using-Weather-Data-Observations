@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-seri;
+    background-image: url("../assets/fire-bc.png");
+    /* background-color: #cccccc; */
+}
+
+@media (max-width: 1400px) {
+    body {
+        zoom: 78%;
+    }
+}
+
+/* Font */
+
+.red-text {
+    color: red;
+  }
+  
+.green-text {
+    color: green;
+  }
+
+
+/* Style for the heading */
+
+header, footer {
+    text-align: center;
+    padding: 0.1rem;
+    background-color: rgba(0, 0, 0, 0.5); /* Add transparency to the background */
+    height: fit-content;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.header-date {
+    color: white;
+    margin-left: 1rem;
+}
+
+.header-time {
+    color: white;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}
+
+.title-text {
+    font-size: 40px;
+    color: white;
+    text-align: left;
+    text-shadow: 2px 2px 3px white;
+    margin: 1rem auto;
+}
+p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Description */
+
+.content-description {
+    text-align: center;
+    color: white;
+    margin: 1rem 2rem;
+}
+
+/* Style for the container */
+.weather-container, .pred-container {
+    max-width: 400px;
+    margin: 2rem auto 0;
+    text-align: center;
+    background:rgb(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.weather-container-title,
+.pred-container-title {
+    color: white;
+    opacity: 0.9;
+    margin: 0 auto 1rem;
+}
+
+/* Style for parameter cards */
+.weather-card, .pred-card {
+    background-color: rgb(0, 0, 0, 0.6);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+/* Style for parameter labels */
+.parameter-label {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Style for parameter values */
+.parameter-value {
+    font-size: 24px;
+}
+
+
+/* Prediction */
+
+.pred-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 0;
+}
+
+.label-img {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+#prediction {
+    font-size: x-large;
+    font-weight: 600;
+}
+
+/* Footer */
+
+footer {
+    margin-top: 2rem;
+}
+
+.footer-text {
+    color: white;
+    font-size: 14px;
+    font-style: italic;
+    opacity: 0.9;
+    margin: 1rm auto 1rem;
+}

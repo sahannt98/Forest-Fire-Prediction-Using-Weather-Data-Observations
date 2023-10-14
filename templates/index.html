@@ -13,7 +13,6 @@
     ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      // var socket = io.connect('http://' + document.domain + ':' + location.port + '/mqtt');
       var socket = io();
       socket.on("mqtt_data_update", function (data) {
         console.log(data);
@@ -23,33 +22,80 @@
         document.getElementById("prediction").textContent = data[3];
         var predElement = document.getElementById("prediction");
         var imageElement = document.getElementById("imageElement");
-        if(predElement.textContent == "You're in Danger"){
+        if (predElement.textContent == "Danger") {
           predElement.classList.remove("green-text");
           predElement.classList.add("red-text");
           imageElement.src = "../static/assets/fire.png";
-        }
-        else{
+        } else {
           predElement.classList.remove("red-text");
           predElement.classList.add("green-text");
           imageElement.src = "../static/assets/safe.png";
         }
+
+        $.get("/current_datetime", function (data) {
+          var date = data.current_datetime.split(" ")[0];
+          var time =
+            data.current_datetime.split(" ")[1] +
+            " " +
+            data.current_datetime.split(" ")[2];
+          document.getElementById("predicted-timestamp").textContent =
+            date + " " + time;
+        });
       });
     </script>
     <script>
-        function updateDateTime() {
-            $.get('/current_datetime', function(data) {
-                var date = data.current_datetime.split(" ")[0];
-                var time = data.current_datetime.split(" ")[1] + " " 
-                + data.current_datetime.split(" ")[2];
-                document.getElementById("date").textContent = date;
-                document.getElementById("time").textContent = time;
-                console.log(data.current_datetime);
-            });
-        }
+      function updateDateTime() {
+        $.get("/current_datetime", function (data) {
+          var date = data.current_datetime.split(" ")[0];
+          var time =
+            data.current_datetime.split(" ")[1] +
+            " " +
+            data.current_datetime.split(" ")[2];
+          document.getElementById("date").textContent = date;
+          document.getElementById("time").textContent = time;
+          // console.log(data.current_datetime);
+        });
+      }
 
-        setInterval(updateDateTime, 60000);
-        updateDateTime();
+      setInterval(updateDateTime, 60000);
+      updateDateTime();
     </script>
+
+<script>
+  // Function to send data to the server
+  function sendDataToServer() {
+      // Retrieve input values
+      var temperature = parseFloat(document.getElementById("temperatureInput").value);
+      var humidity = parseFloat(document.getElementById("humidityInput").value);
+      var rainfall = parseFloat(document.getElementById("rainfallInput").value);
+
+      // Create a data object to send to the server
+      var data = [
+          temperature,
+          humidity,
+          rainfall
+  ];
+
+      // Send the data to the server
+      fetch('/process_data', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      .then(response => {
+          if (response.ok) {
+              console.log('Data sent to server successfully.');
+              document.getElementById("weatherInputForm").reset();
+          } else {
+              console.error('Failed to send data to server.');
+          }
+      })
+      .catch(error => console.error(error));
+  }
+</script>
+
   </head>
   <body>
     <header>
@@ -66,40 +112,84 @@
         provide accurate and timely data to help prevent and manage forest fires
         effectively.
       </p>
-      <div class="weather-container">
-        <h1 class="weather-container-title">Weather Info</h1>
-        <div class="weather-card">
-          <div class="parameter-label">Temperature</div>
-          <div class="parameter-value">
-            <span id="temperature">-</span> &deg;C
+      <div class="first-row">
+        <div class="input-data">
+          <h1 class="Input-container-title">Input Data</h1>
+          <form id="weatherInputForm">
+            <div class="input-field">
+              <label for="temperatureInput">Temperature (&deg;C):</label>
+              <input
+                type="number"
+                id="temperatureInput"
+                name="temperature"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="input-field">
+              <label for="humidityInput">Humidity (%):</label>
+              <input
+                type="number"
+                id="humidityInput"
+                name="humidity"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="input-field">
+              <label for="rainfallInput">Rainfall (mm):</label>
+              <input
+                type="number"
+                id="rainfallInput"
+                name="rainfall"
+                step="0.01"
+                required
+              />
+            </div>
+            <button class="predict-button" type="button" onclick="sendDataToServer()">Predict</button>
+          </form>
+        </div>
+        <div class="weather-container">
+          <h1 class="weather-container-title">Weather Info</h1>
+          <div class="weather-card">
+            <div class="parameter-label">Temperature</div>
+            <div class="parameter-value">
+              <span id="temperature">-</span> &deg;C
+            </div>
           </div>
-        </div>
-        <div class="weather-card">
-          <div class="parameter-label">Humidity</div>
-          <div class="parameter-value"><span id="humidity">-</span> %</div>
-        </div>
-        <div class="weather-card">
-          <div class="parameter-label">Rainfall</div>
-          <div class="parameter-value"><span id="rainfall">-</span> mm</div>
+          <div class="weather-card">
+            <div class="parameter-label">Humidity</div>
+            <div class="parameter-value"><span id="humidity">-</span> %</div>
+          </div>
+          <div class="weather-card">
+            <div class="parameter-label">Rainfall</div>
+            <div class="parameter-value"><span id="rainfall">-</span> mm</div>
+          </div>
         </div>
       </div>
       <div class="pred-container">
         <h1 class="pred-container-title">Prediction</h1>
-        <div class="pred-card">
-          <div class="pred-label">
-            <img
-              src="../static/assets/fire.png"
-              alt="Safe Icon"
-              class="label-img"
-              id="imageElement"
-            />
+        <div class="pred-data">
+          <div class="pred-card">
+            <div class="pred-label">
+              <img
+                src="../static/assets/fire.png"
+                alt="Safe Icon"
+                class="label-img"
+                id="imageElement"
+              />
+            </div>
+            <div class="pred-text">
+              <span id="prediction">-</span>
+            </div>
           </div>
-          <div class="pred-text">
-            <span id="prediction">-</span>
+          <div class="time-card">
+            Timestamp : <span id="predicted-timestamp">-</span>
           </div>
         </div>
       </div>
     </div>
+
     <footer>
       <div>
         <p class="footer-text">Copyright &#169; 2023. All Rights Reserved.</p>

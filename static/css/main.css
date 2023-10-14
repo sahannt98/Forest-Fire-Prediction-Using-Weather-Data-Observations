@@ -38,6 +38,7 @@ header, footer {
     align-items: center;
 }
 
+
 .header-date {
     color: white;
     margin-left: 1rem;
@@ -70,8 +71,18 @@ p {
 }
 
 /* Style for the container */
-.weather-container, .pred-container {
-    max-width: 400px;
+.weather-container, .pred-container, .input-data {
+    max-width: fit-content;
+    margin: 2rem 2rem 0;
+    text-align: center;
+    background:rgb(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.pred-container {
+    max-width: fit-content;
     margin: 2rem auto 0;
     text-align: center;
     background:rgb(0, 0, 0, 0.4);
@@ -81,14 +92,15 @@ p {
 }
 
 .weather-container-title,
-.pred-container-title {
+.pred-container-title,
+.Input-container-title {
     color: white;
     opacity: 0.9;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.5rem;
 }
 
 /* Style for parameter cards */
-.weather-card, .pred-card {
+.weather-card, .pred-card, .time-card, #weatherInputForm {
     background-color: rgb(0, 0, 0, 0.6);
     padding: 10px;
     margin: 10px;
@@ -144,3 +156,57 @@ footer {
     opacity: 0.9;
     margin: 1rm auto 1rem;
 }
+
+.pred-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pred-label {
+    margin-left: 2rem;
+}
+
+.pred-text {
+    margin-right: 2rem;
+}
+
+/* Input */
+.input-data {
+    color: white;
+}
+
+.first-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-field {
+    margin: 2rem auto;
+    display: flex; 
+    justify-content: space-between;
+}
+
+input {
+    width: 40%; 
+    /* padding: 10px;  */
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 16px;
+    text-align: start;
+}
+
+.predict-button {
+    background-color: grey; /* Background color */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .predict-button:hover {
+    background-color: darkgray; /* Change the background color on hover */
+  }

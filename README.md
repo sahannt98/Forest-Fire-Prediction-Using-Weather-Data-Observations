@@ -6,4 +6,5 @@ The primary objective of this project was to create a real time web application 
 
 #### Technologies : Python, scikitlearn, Flask, Socket.IO
 
-![alt text](https://github.com/sahannt98/Forest-Fire-Prediction-Using-Weather-Data-Observations/blob/main/forestfire.jpg?raw=true)
+
+![wildfire](https://github.com/sahannt98/Forest-Fire-Prediction-Using-Weather-Data-Observations/assets/78171983/8c0b4dca-4513-4942-ba66-00bd203f2dbf)
